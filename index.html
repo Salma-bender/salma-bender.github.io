@@ -1,0 +1,1517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Salma Bender | Cybersecurity Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root {
+  --bg-void:        #020408;
+  --bg-deep:        #050c12;
+  --bg-panel:       #081018;
+  --bg-card:        #0a1520;
+  --bg-card-hover:  #0d1c2b;
+  --accent-cyan:    #00f5ff;
+  --accent-green:   #00ff88;
+  --accent-red:     #ff2244;
+  --accent-amber:   #ffaa00;
+  --accent-purple:  #8855ff;
+  --text-primary:   #e8f4ff;
+  --text-secondary: #7aa5c0;
+  --text-dim:       #3a6070;
+  --border-glow:    rgba(0,245,255,0.15);
+  --border-subtle:  rgba(0,245,255,0.06);
+  --font-mono:      'Share Tech Mono', monospace;
+  --font-display:   'Orbitron', monospace;
+  --font-body:      'Rajdhani', sans-serif;
+  --glow-sm:        0 0 8px rgba(0,245,255,0.4);
+  --glow-md:        0 0 20px rgba(0,245,255,0.3), 0 0 40px rgba(0,245,255,0.1);
+  --glow-lg:        0 0 40px rgba(0,245,255,0.4), 0 0 80px rgba(0,245,255,0.15);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg-void);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 16px;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* CURSOR */
+.cursor { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 99999; }
+.cursor-dot {
+  width: 6px; height: 6px; background: var(--accent-cyan);
+  border-radius: 50%; position: absolute;
+  transform: translate(-50%, -50%);
+  box-shadow: var(--glow-sm);
+}
+.cursor-ring {
+  width: 28px; height: 28px;
+  border: 1px solid rgba(0,245,255,0.5);
+  border-radius: 50%; position: absolute;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s, border-color 0.3s;
+}
+
+/* SCANLINE */
+body::before {
+  content: '';
+  position: fixed; inset: 0; pointer-events: none; z-index: 9998;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+}
+
+#matrix-canvas {
+  position: fixed; top: 0; left: 0;
+  width: 100%; height: 100%;
+  opacity: 0.04; pointer-events: none; z-index: 0;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  padding: 0 5%;
+  background: rgba(2,4,8,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex; align-items: center; justify-content: space-between;
+  height: 60px;
+}
+.nav-logo {
+  font-family: var(--font-display); font-size: 0.85rem;
+  color: var(--accent-cyan); text-decoration: none;
+  letter-spacing: 0.15em; display: flex; align-items: center; gap: 10px;
+}
+.nav-logo-bracket { color: var(--accent-green); opacity: 0.7; }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a {
+  font-family: var(--font-mono); font-size: 0.72rem;
+  color: var(--text-secondary); text-decoration: none;
+  letter-spacing: 0.1em; transition: color 0.2s; position: relative;
+}
+.nav-links a::before { content: '> '; color: var(--accent-cyan); opacity: 0; transition: opacity 0.2s; }
+.nav-links a:hover { color: var(--accent-cyan); }
+.nav-links a:hover::before { opacity: 1; }
+.nav-status {
+  display: flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent-green);
+}
+.status-dot {
+  width: 6px; height: 6px; background: var(--accent-green); border-radius: 50%;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%,100% { box-shadow: 0 0 4px var(--accent-green); }
+  50% { box-shadow: 0 0 12px var(--accent-green), 0 0 20px var(--accent-green); }
+}
+.hamburger {
+  display: none; flex-direction: column; gap: 5px;
+  background: none; border: none; cursor: pointer; padding: 4px;
+}
+.hamburger span { width: 22px; height: 1px; background: var(--accent-cyan); display: block; transition: all 0.3s; }
+
+/* HERO */
+#home {
+  min-height: 100vh; display: flex; align-items: center;
+  padding: 80px 5% 40px; position: relative; overflow: hidden;
+}
+.hero-grid-bg {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(0,245,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,245,255,0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+.hero-grid-bg::after {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 30% 50%, rgba(0,245,255,0.04) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 20%, rgba(0,255,136,0.03) 0%, transparent 50%);
+}
+.hero-content { position: relative; z-index: 1; max-width: 800px; }
+.hero-tag {
+  font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent-green);
+  letter-spacing: 0.2em; display: flex; align-items: center; gap: 10px;
+  margin-bottom: 1.5rem; opacity: 0; animation: fadeInUp 0.6s ease 0.2s forwards;
+}
+.hero-tag::before { content: ''; width: 30px; height: 1px; background: var(--accent-green); }
+.hero-name {
+  font-family: var(--font-display); font-size: clamp(2.2rem, 5vw, 4rem);
+  font-weight: 900; line-height: 1.1; margin-bottom: 0.5rem;
+  opacity: 0; animation: fadeInUp 0.6s ease 0.4s forwards;
+}
+.hero-name span { color: var(--accent-cyan); text-shadow: var(--glow-md); }
+.hero-title {
+  font-family: var(--font-display); font-size: clamp(0.9rem, 2vw, 1.2rem);
+  color: var(--text-secondary); letter-spacing: 0.25em; margin-bottom: 1.5rem;
+  opacity: 0; animation: fadeInUp 0.6s ease 0.6s forwards;
+}
+.hero-terminal {
+  background: var(--bg-panel); border: 1px solid var(--border-glow); border-radius: 4px;
+  padding: 1.2rem 1.5rem; font-family: var(--font-mono); font-size: 0.82rem;
+  max-width: 580px; margin-bottom: 2rem; position: relative;
+  opacity: 0; animation: fadeInUp 0.6s ease 0.8s forwards;
+}
+.hero-terminal::before {
+  content: ''; position: absolute; inset: -1px;
+  background: linear-gradient(135deg, rgba(0,245,255,0.1), transparent, rgba(0,255,136,0.05));
+  border-radius: 4px; z-index: -1;
+}
+.terminal-bar { display: flex; gap: 6px; margin-bottom: 0.8rem; }
+.t-dot { width: 10px; height: 10px; border-radius: 50%; }
+.t-dot.red { background: #ff5f57; }
+.t-dot.amber { background: #febc2e; }
+.t-dot.green { background: #28c840; }
+.terminal-line { margin-bottom: 0.3rem; line-height: 1.6; }
+.t-prompt { color: var(--accent-green); }
+.t-cmd { color: var(--text-primary); }
+.t-out { color: var(--text-secondary); padding-left: 1rem; }
+.t-cyan { color: var(--accent-cyan); }
+.t-green { color: var(--accent-green); }
+.t-amber { color: var(--accent-amber); }
+.t-cursor {
+  display: inline-block; width: 8px; height: 14px;
+  background: var(--accent-cyan); vertical-align: middle;
+  animation: blink 1s step-end infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+.hero-actions {
+  display: flex; flex-wrap: wrap; gap: 1rem;
+  opacity: 0; animation: fadeInUp 0.6s ease 1s forwards;
+}
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 8px; padding: 0.75rem 1.8rem;
+  background: transparent; border: 1px solid var(--accent-cyan); color: var(--accent-cyan);
+  font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.12em;
+  text-decoration: none; cursor: pointer; position: relative; overflow: hidden;
+  transition: color 0.3s, box-shadow 0.3s;
+}
+.btn-primary::before {
+  content: ''; position: absolute; inset: 0; background: var(--accent-cyan);
+  transform: translateX(-100%); transition: transform 0.3s ease; z-index: -1;
+}
+.btn-primary:hover { color: var(--bg-void); box-shadow: var(--glow-md); }
+.btn-primary:hover::before { transform: translateX(0); }
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 8px; padding: 0.75rem 1.8rem;
+  background: transparent; border: 1px solid rgba(0,255,136,0.3); color: var(--accent-green);
+  font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.12em;
+  text-decoration: none; cursor: pointer; transition: border-color 0.3s, box-shadow 0.3s;
+}
+.btn-secondary:hover { border-color: var(--accent-green); box-shadow: 0 0 20px rgba(0,255,136,0.2); }
+.hero-stats {
+  position: absolute; right: 5%; top: 50%; transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 1.5rem;
+  opacity: 0; animation: fadeInRight 0.8s ease 1.2s forwards;
+}
+.stat-item { text-align: right; border-right: 2px solid var(--accent-cyan); padding-right: 1rem; }
+.stat-number { font-family: var(--font-display); font-size: 1.8rem; color: var(--accent-cyan); line-height: 1; text-shadow: var(--glow-sm); }
+.stat-label { font-family: var(--font-mono); font-size: 0.62rem; color: var(--text-dim); letter-spacing: 0.15em; }
+.scroll-indicator {
+  position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  font-family: var(--font-mono); font-size: 0.6rem; color: var(--text-dim); letter-spacing: 0.2em;
+  animation: float 3s ease-in-out infinite;
+}
+.scroll-indicator .arrow {
+  width: 12px; height: 12px;
+  border-right: 1px solid var(--text-dim); border-bottom: 1px solid var(--text-dim);
+  transform: rotate(45deg);
+}
+@keyframes float { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(6px)} }
+@keyframes fadeInUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeInRight { from{opacity:0;transform:translate(20px,-50%)} to{opacity:1;transform:translate(0,-50%)} }
+
+/* SECTIONS */
+section { padding: 6rem 5%; position: relative; z-index: 1; }
+section:nth-child(even) { background: rgba(5,12,18,0.5); }
+.section-header { margin-bottom: 3.5rem; }
+.section-tag {
+  font-family: var(--font-mono); font-size: 0.68rem; color: var(--accent-green);
+  letter-spacing: 0.25em; display: flex; align-items: center; gap: 10px; margin-bottom: 0.6rem;
+}
+.section-tag::before { content: ''; width: 20px; height: 1px; background: var(--accent-green); }
+.section-title { font-family: var(--font-display); font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 700; color: var(--text-primary); letter-spacing: 0.05em; }
+.section-title span { color: var(--accent-cyan); text-shadow: var(--glow-sm); }
+.section-divider { width: 60px; height: 2px; background: linear-gradient(90deg, var(--accent-cyan), transparent); margin-top: 1rem; }
+
+/* ===================== ABOUT — REDESIGNED ===================== */
+.about-grid {
+  display: grid; grid-template-columns: 1fr 1.6fr;
+  gap: 4rem; align-items: start;
+}
+.about-visual { position: relative; }
+.about-avatar-wrapper { position: relative; width: fit-content; }
+.avatar-hex {
+  width: 220px; height: 220px; background: var(--bg-card);
+  border: 1px solid var(--border-glow);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden; transition: box-shadow 0.3s;
+}
+.avatar-hex:hover { box-shadow: var(--glow-lg); }
+.avatar-hex::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,245,255,0.05), transparent); }
+.about-ring {
+  position: absolute; border: 1px dashed rgba(0,245,255,0.2); border-radius: 50%;
+  animation: spin-slow 20s linear infinite;
+}
+.about-ring.r1 { width: 260px; height: 260px; top: -20px; left: -20px; }
+.about-ring.r2 { width: 300px; height: 300px; top: -40px; left: -40px; animation-direction: reverse; animation-duration: 30s; }
+@keyframes spin-slow { to { transform: rotate(360deg); } }
+.about-badges { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
+.badge {
+  font-family: var(--font-mono); font-size: 0.62rem; padding: 0.3rem 0.7rem;
+  border: 1px solid var(--border-glow); color: var(--text-secondary); background: var(--bg-panel);
+  letter-spacing: 0.1em; transition: all 0.2s;
+}
+.badge:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); background: rgba(0,245,255,0.05); }
+
+/* About text — new professional layout */
+.about-text { display: flex; flex-direction: column; gap: 1.5rem; }
+
+.about-summary {
+  border-left: 3px solid var(--accent-cyan);
+  padding-left: 1.2rem;
+  padding-top: 0.2rem;
+}
+.about-summary p {
+  font-size: 1.05rem; line-height: 1.85; color: var(--text-secondary); font-weight: 300;
+  margin-bottom: 0.8rem;
+}
+.about-summary p:last-child { margin-bottom: 0; }
+.about-summary p strong { color: var(--accent-cyan); font-weight: 600; }
+
+.about-highlight-row {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+.about-highlight {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-top: 2px solid var(--accent-cyan);
+  padding: 1rem 1rem 0.8rem;
+  transition: border-color 0.3s, transform 0.3s;
+}
+.about-highlight:hover { border-color: var(--border-glow); transform: translateY(-2px); }
+.about-highlight:nth-child(2) { border-top-color: var(--accent-green); }
+.about-highlight:nth-child(3) { border-top-color: var(--accent-amber); }
+.hl-number {
+  font-family: var(--font-display); font-size: 1.6rem; font-weight: 900;
+  color: var(--accent-cyan); line-height: 1; text-shadow: var(--glow-sm);
+}
+.about-highlight:nth-child(2) .hl-number { color: var(--accent-green); }
+.about-highlight:nth-child(3) .hl-number { color: var(--accent-amber); }
+.hl-label {
+  font-family: var(--font-mono); font-size: 0.6rem; color: var(--text-dim);
+  letter-spacing: 0.15em; margin-top: 0.2rem;
+}
+
+.about-info-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem;
+}
+.info-item {
+  display: flex; flex-direction: column; gap: 2px; padding: 0.75rem 0.9rem;
+  background: var(--bg-card); border-left: 2px solid var(--accent-cyan);
+}
+.info-label { font-family: var(--font-mono); font-size: 0.58rem; color: var(--text-dim); letter-spacing: 0.15em; }
+.info-value { font-family: var(--font-body); font-size: 0.9rem; color: var(--text-primary); font-weight: 500; }
+
+.about-quote {
+  background: linear-gradient(135deg, rgba(0,245,255,0.04), rgba(0,255,136,0.02));
+  border: 1px solid var(--border-glow);
+  padding: 1rem 1.2rem;
+  display: flex; align-items: flex-start; gap: 0.8rem;
+}
+.about-quote i { color: var(--accent-cyan); opacity: 0.5; font-size: 1.2rem; flex-shrink: 0; margin-top: 2px; }
+.about-quote p {
+  font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-secondary);
+  line-height: 1.7; letter-spacing: 0.03em;
+}
+.about-quote p span { color: var(--accent-green); }
+
+/* SKILLS */
+.skills-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+.skill-category {
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  padding: 1.5rem; position: relative; overflow: hidden;
+  transition: border-color 0.3s, transform 0.3s;
+}
+.skill-category::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--accent-cyan), transparent);
+  transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease;
+}
+.skill-category:hover { border-color: var(--border-glow); transform: translateY(-3px); }
+.skill-category:hover::before { transform: scaleX(1); }
+.skill-cat-header { display: flex; align-items: center; gap: 10px; margin-bottom: 1.2rem; }
+.skill-cat-icon {
+  width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
+  background: rgba(0,245,255,0.08); border: 1px solid var(--border-glow);
+  color: var(--accent-cyan); font-size: 0.9rem;
+}
+.skill-cat-title { font-family: var(--font-display); font-size: 0.75rem; letter-spacing: 0.1em; color: var(--text-primary); }
+.skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.skill-tag {
+  font-family: var(--font-mono); font-size: 0.68rem; padding: 0.35rem 0.75rem;
+  background: var(--bg-panel); border: 1px solid rgba(0,245,255,0.08);
+  color: var(--text-secondary); letter-spacing: 0.05em; cursor: default; transition: all 0.2s;
+}
+.skill-tag:hover { background: rgba(0,245,255,0.08); border-color: rgba(0,245,255,0.3); color: var(--accent-cyan); }
+.skill-tag.green { border-color: rgba(0,255,136,0.15); }
+.skill-tag.green:hover { background: rgba(0,255,136,0.08); border-color: rgba(0,255,136,0.4); color: var(--accent-green); }
+.skill-tag.amber { border-color: rgba(255,170,0,0.15); }
+.skill-tag.amber:hover { background: rgba(255,170,0,0.08); border-color: rgba(255,170,0,0.4); color: var(--accent-amber); }
+.skill-tag.purple { border-color: rgba(136,85,255,0.15); }
+.skill-tag.purple:hover { background: rgba(136,85,255,0.08); border-color: rgba(136,85,255,0.4); color: var(--accent-purple); }
+
+/* PROJECTS */
+.projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.5rem; }
+.project-card {
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  position: relative; overflow: hidden; transition: all 0.4s ease; display: flex; flex-direction: column;
+}
+.project-card:hover { border-color: var(--border-glow); transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 30px rgba(0,245,255,0.05); }
+.project-card-glow {
+  position: absolute; top: 0; right: 0; width: 150px; height: 150px;
+  border-radius: 50%; filter: blur(60px); opacity: 0; transition: opacity 0.4s;
+}
+.project-card:hover .project-card-glow { opacity: 1; }
+.project-card.cyan .project-card-glow  { background: var(--accent-cyan); }
+.project-card.green .project-card-glow { background: var(--accent-green); }
+.project-card.amber .project-card-glow { background: var(--accent-amber); }
+.project-header { padding: 1.5rem 1.5rem 0; display: flex; justify-content: space-between; align-items: flex-start; }
+.project-icon-wrap { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-glow); font-size: 1.1rem; }
+.project-card.cyan  .project-icon-wrap { color: var(--accent-cyan);  background: rgba(0,245,255,0.06); }
+.project-card.green .project-icon-wrap { color: var(--accent-green); background: rgba(0,255,136,0.06); border-color: rgba(0,255,136,0.2); }
+.project-card.amber .project-icon-wrap { color: var(--accent-amber); background: rgba(255,170,0,0.06); border-color: rgba(255,170,0,0.2); }
+.project-status { font-family: var(--font-mono); font-size: 0.58rem; padding: 0.25rem 0.6rem; border-radius: 2px; letter-spacing: 0.1em; }
+.project-status.active  { background: rgba(0,255,136,0.1); color: var(--accent-green); border: 1px solid rgba(0,255,136,0.2); }
+.project-status.dev     { background: rgba(255,170,0,0.1); color: var(--accent-amber); border: 1px solid rgba(255,170,0,0.2); }
+.project-status.planned { background: rgba(136,85,255,0.1); color: var(--accent-purple); border: 1px solid rgba(136,85,255,0.2); }
+.project-body { padding: 1.2rem 1.5rem; flex: 1; }
+.project-title { font-family: var(--font-display); font-size: 0.9rem; letter-spacing: 0.05em; margin-bottom: 0.6rem; color: var(--text-primary); }
+.project-desc { font-size: 0.88rem; line-height: 1.7; color: var(--text-secondary); font-weight: 300; margin-bottom: 1rem; }
+.project-techs { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.tech-pill { font-family: var(--font-mono); font-size: 0.58rem; padding: 0.2rem 0.55rem; background: var(--bg-panel); border: 1px solid var(--border-subtle); color: var(--text-dim); letter-spacing: 0.08em; }
+.project-footer { padding: 1rem 1.5rem; border-top: 1px solid var(--border-subtle); display: flex; gap: 1rem; }
+.proj-link { font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-secondary); text-decoration: none; display: flex; align-items: center; gap: 5px; letter-spacing: 0.08em; transition: color 0.2s; }
+.project-card.cyan  .proj-link:hover { color: var(--accent-cyan); }
+.project-card.green .proj-link:hover { color: var(--accent-green); }
+.project-card.amber .proj-link:hover { color: var(--accent-amber); }
+
+/* CERTS & CTF */
+.certs-ctf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+.cert-list { display: flex; flex-direction: column; gap: 0.8rem; }
+.cert-item {
+  display: flex; align-items: center; gap: 1rem; padding: 1rem 1.2rem;
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  transition: all 0.3s; cursor: default;
+}
+.cert-item:hover { border-color: var(--border-glow); background: var(--bg-card-hover); }
+.cert-icon { width: 36px; height: 36px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+.cert-icon.gold    { color: #ffd700; }
+.cert-icon.silver  { color: #c0c0c0; }
+.cert-icon.cyan    { color: var(--accent-cyan); }
+.cert-icon.green   { color: var(--accent-green); }
+.cert-info { flex: 1; }
+.cert-name { font-family: var(--font-body); font-size: 0.9rem; font-weight: 600; color: var(--text-primary); }
+.cert-issuer { font-family: var(--font-mono); font-size: 0.62rem; color: var(--text-dim); letter-spacing: 0.1em; }
+.cert-badge-tag { font-family: var(--font-mono); font-size: 0.58rem; padding: 0.2rem 0.5rem; background: rgba(0,245,255,0.06); border: 1px solid var(--border-glow); color: var(--text-dim); }
+.ctf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+.ctf-card { padding: 1rem; background: var(--bg-card); border: 1px solid var(--border-subtle); transition: all 0.3s; }
+.ctf-card:hover { border-color: rgba(0,255,136,0.2); }
+.ctf-platform { font-family: var(--font-display); font-size: 0.72rem; color: var(--accent-green); letter-spacing: 0.1em; margin-bottom: 0.4rem; }
+.ctf-stat { font-family: var(--font-mono); font-size: 0.65rem; color: var(--text-dim); line-height: 1.8; }
+.ctf-stat span { color: var(--text-secondary); }
+
+/* ===================== CTF COMPETITIONS SECTION ===================== */
+#competitions .section-title span { color: var(--accent-cyan); text-shadow: var(--glow-sm); }
+#competitions .section-divider { background: linear-gradient(90deg, var(--accent-cyan), transparent); }
+#competitions .section-tag { color: var(--accent-green); }
+#competitions .section-tag::before { background: var(--accent-green); }
+
+.competitions-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 1.5rem;
+}
+
+.ctf-competition-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  position: relative; overflow: hidden;
+  transition: all 0.4s ease;
+  display: flex; flex-direction: column;
+}
+.ctf-competition-card:hover {
+  border-color: rgba(255,170,0,0.25);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 30px rgba(255,170,0,0.05);
+}
+
+/* top accent bar with animated glow */
+.ctf-card-bar {
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-cyan), var(--accent-green), var(--accent-cyan));
+  background-size: 200% 100%;
+  animation: barShimmer 3s ease infinite;
+}
+.ctf-competition-card.live .ctf-card-bar {
+  background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan), var(--accent-green));
+}
+@keyframes barShimmer { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+
+.ctf-card-inner { padding: 1.4rem 1.5rem; flex: 1; display: flex; flex-direction: column; gap: 1rem; }
+
+.ctf-card-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.8rem; }
+
+.ctf-rank-badge {
+  display: flex; align-items: center; justify-content: center;
+  width: 52px; height: 52px; flex-shrink: 0;
+  background: rgba(255,170,0,0.06);
+  border: 1px solid rgba(255,170,0,0.2);
+  position: relative;
+}
+.ctf-competition-card.live .ctf-rank-badge {
+  background: rgba(0,255,136,0.06);
+  border-color: rgba(0,255,136,0.2);
+}
+.ctf-rank-badge i { font-size: 1.4rem; color: var(--accent-amber); }
+.ctf-competition-card.live .ctf-rank-badge i { color: var(--accent-green); }
+
+.ctf-live-indicator {
+  position: absolute; top: -4px; right: -4px;
+  width: 10px; height: 10px; background: var(--accent-green);
+  border-radius: 50%; border: 2px solid var(--bg-void);
+  animation: livePulse 1.5s ease-in-out infinite;
+}
+@keyframes livePulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(0,255,136,0.6); }
+  50% { box-shadow: 0 0 0 6px rgba(0,255,136,0); }
+}
+
+.ctf-card-title-group { flex: 1; }
+.ctf-name {
+  font-family: var(--font-display); font-size: 0.92rem;
+  letter-spacing: 0.06em; color: var(--text-primary);
+  margin-bottom: 0.3rem; line-height: 1.3;
+}
+.ctf-organizer {
+  font-family: var(--font-mono); font-size: 0.62rem;
+  color: var(--text-dim); letter-spacing: 0.1em; line-height: 1.6;
+}
+.ctf-organizer span { color: var(--accent-amber); }
+.ctf-competition-card.live .ctf-organizer span { color: var(--accent-green); }
+
+.ctf-status-pill {
+  font-family: var(--font-mono); font-size: 0.58rem;
+  padding: 0.25rem 0.65rem; border-radius: 2px; letter-spacing: 0.1em;
+  flex-shrink: 0; align-self: flex-start;
+  display: flex; align-items: center; gap: 5px;
+}
+.ctf-status-pill.live-pill {
+  background: rgba(0,255,136,0.1); color: var(--accent-green);
+  border: 1px solid rgba(0,255,136,0.2);
+}
+.ctf-status-pill.live-pill::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent-green); animation: livePulse 1.5s ease-in-out infinite;
+}
+.ctf-status-pill.national-pill {
+  background: rgba(255,170,0,0.1); color: var(--accent-amber);
+  border: 1px solid rgba(255,170,0,0.2);
+}
+.ctf-status-pill.national-pill::before {
+  content: '●'; font-size: 0.5rem; color: var(--accent-amber);
+}
+
+.ctf-categories {
+  display: flex; flex-wrap: wrap; gap: 0.4rem;
+}
+.ctf-cat-tag {
+  font-family: var(--font-mono); font-size: 0.6rem;
+  padding: 0.25rem 0.6rem;
+  background: var(--bg-panel);
+  letter-spacing: 0.05em;
+}
+.ctf-cat-tag.web    { border: 1px solid rgba(0,245,255,0.15); color: var(--accent-cyan); }
+.ctf-cat-tag.crypto { border: 1px solid rgba(136,85,255,0.2); color: var(--accent-purple); }
+.ctf-cat-tag.pwn    { border: 1px solid rgba(255,34,68,0.2); color: var(--accent-red); }
+.ctf-cat-tag.dfir   { border: 1px solid rgba(0,255,136,0.15); color: var(--accent-green); }
+.ctf-cat-tag.nat    { border: 1px solid rgba(255,170,0,0.2); color: var(--accent-amber); }
+.ctf-cat-tag.inst   { border: 1px solid rgba(0,245,255,0.15); color: var(--accent-cyan); }
+
+.ctf-meta-row {
+  display: flex; align-items: center; justify-content: space-between;
+  border-top: 1px solid var(--border-subtle); padding-top: 0.9rem;
+}
+.ctf-meta-item {
+  display: flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono); font-size: 0.62rem; color: var(--text-dim);
+}
+.ctf-meta-item i { font-size: 0.65rem; color: var(--accent-amber); }
+.ctf-competition-card.live .ctf-meta-item i { color: var(--accent-green); }
+.ctf-meta-item span { color: var(--text-secondary); }
+
+/* CTF achievements banner */
+.ctf-achievements-banner {
+  margin-top: 2.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-left: 3px solid var(--accent-cyan);
+  padding: 1.2rem 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1.5rem;
+}
+.ctf-achiev-item { text-align: center; }
+.ctf-achiev-number {
+  font-family: var(--font-display); font-size: 1.8rem;
+  color: var(--accent-cyan); line-height: 1;
+  text-shadow: var(--glow-sm);
+  text-shadow: 0 0 8px rgba(255,170,0,0.4);
+}
+.ctf-achiev-label {
+  font-family: var(--font-mono); font-size: 0.6rem;
+  color: var(--text-dim); letter-spacing: 0.15em; margin-top: 0.2rem;
+}
+
+/* GITHUB */
+.github-section-inner { display: grid; grid-template-columns: 1fr 2fr; gap: 3rem; align-items: start; }
+.github-profile-card {
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  padding: 1.8rem; text-align: center; position: relative; overflow: hidden;
+}
+.github-profile-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--accent-cyan), var(--accent-green));
+}
+.gh-avatar {
+  width: 80px; height: 80px; background: var(--bg-panel); border: 2px solid var(--border-glow);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 2rem; color: var(--accent-cyan); margin: 0 auto 1rem;
+}
+.gh-username { font-family: var(--font-mono); font-size: 1rem; color: var(--accent-cyan); margin-bottom: 0.3rem; }
+.gh-bio { font-size: 0.82rem; color: var(--text-dim); margin-bottom: 1.2rem; line-height: 1.6; }
+.gh-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; margin-bottom: 1.2rem; }
+.gh-stat { text-align: center; }
+.gh-stat-n { font-family: var(--font-display); font-size: 1.2rem; color: var(--text-primary); }
+.gh-stat-l { font-family: var(--font-mono); font-size: 0.58rem; color: var(--text-dim); letter-spacing: 0.1em; }
+.repos-grid { display: grid; gap: 1rem; }
+.repo-card {
+  background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 1.2rem 1.5rem;
+  display: flex; justify-content: space-between; align-items: flex-start;
+  transition: all 0.3s; text-decoration: none;
+}
+.repo-card:hover { border-color: var(--border-glow); transform: translateX(4px); }
+.repo-name {
+  font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent-cyan);
+  margin-bottom: 0.3rem; display: flex; align-items: center; gap: 6px;
+}
+.repo-name i { font-size: 0.7rem; color: var(--text-dim); }
+.repo-desc { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 0.7rem; font-weight: 300; }
+.repo-meta { display: flex; gap: 1rem; }
+.repo-lang, .repo-stars {
+  font-family: var(--font-mono); font-size: 0.6rem; color: var(--text-dim);
+  display: flex; align-items: center; gap: 4px;
+}
+.lang-dot { width: 8px; height: 8px; border-radius: 50%; }
+.lang-python { background: #3776ab; }
+.lang-php    { background: #777bb4; }
+.lang-shell  { background: #89e051; }
+
+/* CONTACT */
+.contact-wrapper { display: grid; grid-template-columns: 1fr 1.2fr; gap: 4rem; align-items: start; }
+.contact-info { display: flex; flex-direction: column; gap: 1.2rem; }
+.contact-item {
+  display: flex; align-items: center; gap: 1rem; padding: 1rem 1.2rem;
+  background: var(--bg-card); border: 1px solid var(--border-subtle); text-decoration: none; transition: all 0.3s;
+}
+.contact-item:hover { border-color: var(--border-glow); transform: translateX(5px); }
+.contact-icon { width: 40px; height: 40px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-glow); color: var(--accent-cyan); font-size: 1rem; }
+.contact-label { font-family: var(--font-mono); font-size: 0.6rem; color: var(--text-dim); letter-spacing: 0.15em; margin-bottom: 2px; }
+.contact-value { font-size: 0.9rem; color: var(--text-primary); font-weight: 500; }
+.contact-form { display: flex; flex-direction: column; gap: 1rem; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+.form-label { font-family: var(--font-mono); font-size: 0.62rem; color: var(--text-dim); letter-spacing: 0.15em; }
+.form-input, .form-textarea {
+  background: var(--bg-card); border: 1px solid var(--border-subtle); color: var(--text-primary);
+  font-family: var(--font-mono); font-size: 0.82rem; padding: 0.75rem 1rem;
+  outline: none; transition: border-color 0.3s, box-shadow 0.3s; resize: none;
+}
+.form-input:focus, .form-textarea:focus { border-color: var(--accent-cyan); box-shadow: var(--glow-sm); }
+.form-input::placeholder, .form-textarea::placeholder { color: var(--text-dim); }
+.form-textarea { height: 120px; }
+
+/* FOOTER */
+footer {
+  background: var(--bg-deep); border-top: 1px solid var(--border-subtle);
+  padding: 2rem 5%; display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 1rem;
+}
+.footer-left { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-dim); line-height: 1.8; }
+.footer-left span { color: var(--accent-cyan); }
+.footer-socials { display: flex; gap: 0.8rem; }
+.social-link {
+  width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border-subtle); color: var(--text-dim); text-decoration: none;
+  font-size: 0.85rem; transition: all 0.3s;
+}
+.social-link:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); box-shadow: var(--glow-sm); }
+
+/* ANIMATIONS */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* RESPONSIVE */
+@media (max-width: 1100px) {
+  .hero-stats { display: none; }
+  .about-grid { grid-template-columns: 1fr; }
+  .about-highlight-row { grid-template-columns: repeat(3, 1fr); }
+  .certs-ctf-grid { grid-template-columns: 1fr; }
+  .github-section-inner { grid-template-columns: 1fr; }
+  .contact-wrapper { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .nav-links.open {
+    display: flex; flex-direction: column;
+    position: fixed; top: 60px; left: 0; right: 0;
+    background: rgba(2,4,8,0.97); padding: 2rem;
+    border-bottom: 1px solid var(--border-subtle); gap: 1.5rem;
+  }
+  .hamburger { display: flex; }
+  .about-info-grid { grid-template-columns: 1fr; }
+  .about-highlight-row { grid-template-columns: 1fr 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+  .ctf-grid { grid-template-columns: 1fr; }
+  .competitions-grid { grid-template-columns: 1fr; }
+  footer { flex-direction: column; text-align: center; }
+  body { cursor: auto; }
+  .cursor { display: none; }
+}
+@media (max-width: 480px) {
+  .projects-grid { grid-template-columns: 1fr; }
+  .skills-container { grid-template-columns: 1fr; }
+  .hero-actions { flex-direction: column; }
+  .about-highlight-row { grid-template-columns: 1fr; }
+  .ctf-achievements-banner { grid-template-columns: 1fr 1fr; }
+  .ctf-boxes-grid { grid-template-columns: 1fr; }
+}
+/* ---- CTF BOXES ---- */
+.ctf-boxes-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+.ctf-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s, transform 0.3s;
+}
+.ctf-box::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--accent-cyan), transparent);
+}
+.ctf-box:hover {
+  border-color: var(--border-glow);
+  transform: translateY(-3px);
+}
+.ctf-box-live::before {
+  background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan), transparent);
+}
+.ctf-box-live {
+  border-color: rgba(0,255,136,0.12);
+}
+.ctf-box-live:hover {
+  border-color: rgba(0,255,136,0.3);
+}
+.ctf-box-status-badge {
+  position: absolute; top: 1rem; right: 1rem;
+  font-family: var(--font-mono); font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  color: var(--accent-green);
+  border: 1px solid rgba(0,255,136,0.3);
+  padding: 0.2rem 0.6rem;
+  display: flex; align-items: center; gap: 5px;
+  background: rgba(0,255,136,0.05);
+}
+.ctf-live-dot {
+  width: 6px; height: 6px;
+  background: var(--accent-green);
+  border-radius: 50%;
+  animation: pulse-dot 1.5s ease-in-out infinite;
+}
+.ctf-box-rank {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 900;
+  color: var(--accent-cyan);
+  text-shadow: var(--glow-md);
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+.ctf-box-status-label {
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  font-weight: 700;
+  color: var(--accent-green);
+  text-shadow: 0 0 20px rgba(0,255,136,0.3);
+  line-height: 1;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.05em;
+}
+.ctf-box-name {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: var(--text-primary);
+  letter-spacing: 0.08em;
+  margin-bottom: 0.3rem;
+}
+.ctf-box-org {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+  line-height: 1.6;
+}
+.ctf-box-tags {
+  display: flex; flex-wrap: wrap; gap: 0.4rem;
+  margin-top: 1.2rem;
+}
+.ctf-box-stats {
+  display: flex; gap: 2rem;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-subtle);
+}
+.ctf-box-stat {
+  display: flex; flex-direction: column; gap: 2px;
+}
+.ctf-box-stat-n {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  color: var(--accent-green);
+  text-shadow: 0 0 8px rgba(0,255,136,0.3);
+  line-height: 1;
+}
+.ctf-box-stat-l {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  color: var(--text-dim);
+  letter-spacing: 0.15em;
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor">
+  <div class="cursor-dot" id="cursor-dot"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+</div>
+
+<canvas id="matrix-canvas"></canvas>
+
+<!-- NAV -->
+<nav>
+  <a href="#home" class="nav-logo">
+    <span class="nav-logo-bracket">[</span>SALMA.BENDER<span class="nav-logo-bracket">]</span>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about">ABOUT</a></li>
+    <li><a href="#skills">SKILLS</a></li>
+    <li><a href="#projects">PROJECTS</a></li>
+    <li><a href="#competitions">CTF</a></li>
+    <li><a href="#certifications">CERTS</a></li>
+    <li><a href="#github">GITHUB</a></li>
+    <li><a href="#contact">CONTACT</a></li>
+  </ul>
+  <div class="nav-status">
+    <div class="status-dot"></div>
+    SYSTEMS_ONLINE
+  </div>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section id="home">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-content">
+    <div class="hero-tag">INGÉNIEURE EN SÉCURITÉ DES TECHNOLOGIES DE L'INFORMATION</div>
+    <h1 class="hero-name">SALMA<br><span>BENDER</span></h1>
+    <div class="hero-title">SOC ANALYST &nbsp;/&nbsp; PENETRATION TESTER &nbsp;/&nbsp; SECURITY ENGINEER</div>
+
+    <div class="hero-terminal">
+      <div class="terminal-bar">
+        <div class="t-dot red"></div><div class="t-dot amber"></div><div class="t-dot green"></div>
+      </div>
+      <div class="terminal-line"><span class="t-prompt">root@seclab:~$ </span><span class="t-cmd">whoami</span></div>
+      <div class="terminal-line"><span class="t-out"><span class="t-cyan">Ingénieure InfoSec 4ème année — FST Marrakech</span></span></div>
+      <div class="terminal-line"><span class="t-prompt">root@seclab:~$ </span><span class="t-cmd">cat mission.txt</span></div>
+      <div class="terminal-line"><span class="t-out"><span class="t-green">Detect. Pentest. Investigate. Secure.</span></span></div>
+      <div class="terminal-line"><span class="t-prompt">root@seclab:~$ </span><span class="t-cmd">cat experience.log</span></div>
+      <div class="terminal-line"><span class="t-out t-amber">Stage OCP Khouribga — attaque/détection IDS/NSM — Juillet 2025</span></div>
+      <div class="terminal-line"><span class="t-prompt">root@seclab:~$ </span><span class="t-cmd">ls skills/</span></div>
+      <div class="terminal-line"><span class="t-out t-amber">network_security/  pentest/  forensics/  cryptography/  web_dev/</span></div>
+      <div class="terminal-line"><span class="t-prompt">root@seclab:~$ </span><span class="t-cursor"></span></div>
+    </div>
+
+    <div class="hero-actions">
+      <a href="#projects" class="btn-primary"><i class="fas fa-shield-alt"></i> VIEW PROJECTS</a>
+      <a href="Salma_CV.pdf" download class="btn-secondary"><i class="fas fa-download"></i> DOWNLOAD CV</a>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat-item"><div class="stat-number">15+</div><div class="stat-label">SECURITY TOOLS</div></div>
+    <div class="stat-item"><div class="stat-number">2</div><div class="stat-label">CTF EVENTS</div></div>
+    <div class="stat-item"><div class="stat-number">4</div><div class="stat-label">certifications</div></div>
+  </div>
+
+  <div class="scroll-indicator">
+    <span>SCROLL</span><div class="arrow"></div>
+  </div>
+</section>
+
+<!-- ABOUT — REDESIGNED -->
+<section id="about">
+  <div class="section-header reveal">
+    <div class="section-tag">01. WHO AM I</div>
+    <h2 class="section-title">ABOUT <span>ME</span></h2>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="about-grid">
+    <div class="about-visual reveal reveal-delay-1">
+      <div class="about-avatar-wrapper">
+        <div class="about-ring r1"></div>
+        <div class="about-ring r2"></div>
+        <div class="avatar-hex">
+          <img src="image.jpeg" alt="Salma Bender" style="width:100%;height:100%;object-fit:cover;object-position:center top;">
+        </div>
+      </div>
+      <div class="about-badges" style="margin-top:2rem;">
+        <div class="badge">// BLUE TEAM</div>
+        <div class="badge">// RED TEAM</div>
+        <div class="badge">// DFIR</div>
+        <div class="badge">// CTF PLAYER</div>
+      </div>
+    </div>
+
+    <div class="about-text reveal reveal-delay-2">
+
+      <div class="about-summary">
+        <p>
+Élève ingénieure en <strong>4ème année — Sécurité des Systèmes d’Information</strong> à la FST Marrakech (Université Cadi Ayyad), spécialisée en <strong>cybersécurité offensive et défensive</strong> : pentesting, détection d’intrusions, investigation numérique et analyse de sécurité.
+</p>
+
+<p>
+Participante active aux compétitions <strong>Capture The Flag (CTF)</strong>, notamment ST4F1T CTF (ENSA Marrakech 2025) et la compétition nationale <strong>MACC 2026</strong> organisée par la DGSSI & SecDojo.
+</p>
+      </div>
+
+      <div class="about-highlight-row">
+        <div class="about-highlight">
+          <div class="hl-number">4ème</div>
+          <div class="hl-label">ANNÉE INGÉNIERIE</div>
+        </div>
+        <div class="about-highlight">
+          <div class="hl-number">2</div>
+          <div class="hl-label">CTF EVENTS</div>
+        </div>
+        <div class="about-highlight">
+          <div class="hl-number">4</div>
+          <div class="hl-label">certifications</div>
+        </div>
+      </div>
+
+      <div class="about-info-grid">
+        <div class="info-item">
+          <span class="info-label">FORMATION</span>
+          <span class="info-value">Ingénierie Sécurité IT</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">ÉTABLISSEMENT</span>
+          <span class="info-value">FST Marrakech — UCA</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">LOCALISATION</span>
+          <span class="info-value">Marrakech, Maroc</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">RÔLES VISÉS</span>
+          <span class="info-value">SOC Analyst / Pentester</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">DISPONIBILITÉ</span>
+          <span class="info-value">Stage PFA — 2 mois</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">LANGUES</span>
+          <span class="info-value">Français · Anglais · Arabe</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-header reveal">
+    <div class="section-tag">02. CAPABILITIES</div>
+    <h2 class="section-title">TECHNICAL <span>SKILLS</span></h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="skills-container">
+    <div class="skill-category reveal reveal-delay-1">
+      <div class="skill-cat-header">
+        <div class="skill-cat-icon"><i class="fas fa-network-wired"></i></div>
+        <div class="skill-cat-title">NETWORK SECURITY & NSM</div>
+      </div>
+      <div class="skill-tags">
+        <span class="skill-tag">Wireshark</span><span class="skill-tag">Tcpdump</span>
+        <span class="skill-tag">Nmap</span><span class="skill-tag">Zeek</span>
+        <span class="skill-tag">Suricata</span><span class="skill-tag">Security Onion</span>
+      </div>
+    </div>
+    <div class="skill-category reveal reveal-delay-2">
+      <div class="skill-cat-header">
+        <div class="skill-cat-icon"><i class="fas fa-crosshairs"></i></div>
+        <div class="skill-cat-title">OFFENSIVE SECURITY</div>
+      </div>
+      <div class="skill-tags">
+        <span class="skill-tag amber">Metasploit</span><span class="skill-tag amber">Burp Suite</span>
+        <span class="skill-tag amber">OWASP Top 10</span><span class="skill-tag amber">API Pentesting</span>
+        <span class="skill-tag amber">IDOR / BAC</span><span class="skill-tag amber">Kali Linux</span>
+      </div>
+    </div>
+    <div class="skill-category reveal reveal-delay-3">
+      <div class="skill-cat-header">
+        <div class="skill-cat-icon"><i class="fas fa-search"></i></div>
+        <div class="skill-cat-title">DIGITAL FORENSICS & DFIR</div>
+      </div>
+      <div class="skill-tags">
+        <span class="skill-tag purple">Autopsy</span><span class="skill-tag purple">Volatility</span>
+        <span class="skill-tag purple">Memory Analysis</span><span class="skill-tag purple">Disk Forensics</span>
+        <span class="skill-tag purple">Log Analysis</span><span class="skill-tag purple">IoC Correlation</span>
+      </div>
+    </div>
+    <div class="skill-category reveal reveal-delay-1">
+      <div class="skill-cat-header">
+        <div class="skill-cat-icon"><i class="fas fa-lock"></i></div>
+        <div class="skill-cat-title">CRYPTOGRAPHIE</div>
+      </div>
+      <div class="skill-tags">
+        <span class="skill-tag green">AES-256</span><span class="skill-tag green">RSA</span>
+        <span class="skill-tag green">Diffie-Hellman</span><span class="skill-tag green">SHA-256</span>
+        <span class="skill-tag green">TLS 1.3</span><span class="skill-tag green">CBC / CFB / ECB</span>
+      </div>
+    </div>
+    <div class="skill-category reveal reveal-delay-2">
+      <div class="skill-cat-header">
+        <div class="skill-cat-icon"><i class="fas fa-code"></i></div>
+        <div class="skill-cat-title">PROGRAMMATION</div>
+      </div>
+      <div class="skill-tags">
+        <span class="skill-tag">Python</span><span class="skill-tag">C</span>
+        <span class="skill-tag">Java</span><span class="skill-tag">PHP / Laravel</span>
+        <span class="skill-tag">JavaScript</span><span class="skill-tag">Bash</span><span class="skill-tag">MySQL</span>
+      </div>
+    </div>
+    <div class="skill-category reveal reveal-delay-3">
+      <div class="skill-cat-header">
+        <div class="skill-cat-icon"><i class="fas fa-server"></i></div>
+        <div class="skill-cat-title">SYSTÈMES & INFRA</div>
+      </div>
+      <div class="skill-tags">
+        <span class="skill-tag amber">Linux / Kali</span><span class="skill-tag amber">Windows</span>
+        <span class="skill-tag amber">Docker</span><span class="skill-tag amber">Git / GitHub</span>
+        <span class="skill-tag amber">VirtualBox</span><span class="skill-tag amber">UML / Merise</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-header reveal">
+    <div class="section-tag">03. PORTFOLIO</div>
+    <h2 class="section-title">SECURITY <span>PROJECTS</span></h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="projects-grid">
+    <div class="project-card cyan reveal reveal-delay-1">
+      <div class="project-card-glow"></div>
+      <div class="project-header">
+        <div class="project-icon-wrap"><i class="fas fa-shield-virus"></i></div>
+        <span class="project-status active">● RÉALISÉ</span>
+      </div>
+      <div class="project-body">
+        <h3 class="project-title">ATTAQUE & DÉTECTION D'INTRUSIONS — OCP</h3>
+        <p class="project-desc">Stage chez Groupe OCP Khouribga : lab virtuel sécurisé (Kali Linux + Metasploitable 2 + Security Onion), scénario d'attaque complet via Nmap → exploitation vsftpd 2.3.4, supervision IDS/NSM avec Suricata & Zeek, corrélation d'alertes et identification des IoC.</p>
+        <div class="project-techs">
+          <span class="tech-pill">Kali Linux</span><span class="tech-pill">Metasploit</span><span class="tech-pill">Nmap</span>
+          <span class="tech-pill">Suricata</span><span class="tech-pill">Zeek</span><span class="tech-pill">Security Onion</span><span class="tech-pill">IoC Analysis</span>
+        </div>
+      </div>
+      <div class="project-footer">
+        <a href="https://github.com/Salma-bender" class="proj-link" target="_blank"><i class="fab fa-github"></i> GITHUB</a>
+        
+      </div>
+    </div>
+
+    <div class="project-card amber reveal reveal-delay-2">
+      <div class="project-card-glow"></div>
+      <div class="project-header">
+        <div class="project-icon-wrap"><i class="fas fa-bug"></i></div>
+        <span class="project-status dev">◉ EN COURS</span>
+      </div>
+      <div class="project-body">
+        <h3 class="project-title">API SECURITY PENTEST LAB</h3>
+        <p class="project-desc">Lab de pentest dédié aux APIs REST vulnérables sous Docker. Analyse : reconnaissance des endpoints, tests d'authentification, exploitation IDOR, Broken Access Control, JWT tampering — avec Burp Suite.</p>
+        <div class="project-techs">
+          <span class="tech-pill">Burp Suite</span><span class="tech-pill">Docker</span><span class="tech-pill">OWASP API</span>
+          <span class="tech-pill">IDOR</span><span class="tech-pill">BAC</span><span class="tech-pill">Kali Linux</span><span class="tech-pill">REST API</span>
+        </div>
+      </div>
+      <div class="project-footer">
+        <a href="https://github.com/Salma-bender" class="proj-link" target="_blank"><i class="fab fa-github"></i> GITHUB</a>
+    
+      </div>
+    </div>
+
+    <div class="project-card green reveal reveal-delay-3">
+      <div class="project-card-glow"></div>
+      <div class="project-header">
+        <div class="project-icon-wrap"><i class="fas fa-link"></i></div>
+        <span class="project-status active">● TERMINÉ</span>
+      </div>
+      <div class="project-body">
+        <h3 class="project-title">BLOCKCHAIN & HASHCHAIN SECURITY</h3>
+        <p class="project-desc">Mini-blockchain avec Proof of Work (PoW), vérification d'intégrité des blocs et simulation d'une attaque 51%. Interface graphique interactive avec visualisation temps réel.</p>
+        <div class="project-techs">
+          <span class="tech-pill">JavaScript ES6</span><span class="tech-pill">Web Crypto API</span>
+          <span class="tech-pill">SHA-256</span><span class="tech-pill">HTML5</span><span class="tech-pill">Tailwind CSS</span><span class="tech-pill">Git</span>
+        </div>
+      </div>
+      <div class="project-footer">
+        <a href="https://github.com/Salma-bender" class="proj-link" target="_blank"><i class="fab fa-github"></i> GITHUB</a>
+        
+      </div>
+    </div>
+
+    <div class="project-card cyan reveal reveal-delay-1">
+      <div class="project-card-glow"></div>
+      <div class="project-header">
+        <div class="project-icon-wrap"><i class="fas fa-heartbeat"></i></div>
+        <span class="project-status active">● TERMINÉ</span>
+      </div>
+      <div class="project-body">
+        <h3 class="project-title">CERVICALCARE — AI + SECURE PLATFORM</h3>
+        <p class="project-desc">Plateforme IA de détection du cancer du col de l'utérus. Sécurisation : chiffrement AES-256, HTTPS/TLS 1.3, contrôle d'accès multi-rôles, authentification 2FA, audit trail complet (CIA triad).</p>
+        <div class="project-techs">
+          <span class="tech-pill">Laravel 10</span><span class="tech-pill">TensorFlow</span>
+          <span class="tech-pill">AES-256</span><span class="tech-pill">TLS 1.3</span><span class="tech-pill">2FA</span><span class="tech-pill">MySQL 8</span>
+        </div>
+      </div>
+      <div class="project-footer">
+        <a href="https://github.com/Salma-bender" class="proj-link" target="_blank"><i class="fab fa-github"></i> GITHUB</a>
+      </div>
+    </div>
+
+
+  </div>
+</section>
+
+<!-- ===================== CTF COMPETITIONS ===================== -->
+<section id="competitions">
+  <div class="section-header reveal">
+    <div class="section-tag">04. BATTLE RECORD</div>
+    <h2 class="section-title">CTF <span>COMPETITIONS</span></h2>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="ctf-boxes-grid">
+
+    <!-- ST4F1T CTF -->
+    <div class="ctf-box reveal reveal-delay-1">
+      <div class="ctf-box-left">
+        <div class="ctf-box-rank">#16</div>
+        <div class="ctf-box-name">ST4F1T CTF</div>
+        <div class="ctf-box-org">GCDSTE · ENSA Marrakech · 2025</div>
+        <div class="ctf-box-tags">
+          <span class="ctf-cat-tag web">Web Exploitation</span>
+          <span class="ctf-cat-tag crypto">Cryptographie</span>
+          <span class="ctf-cat-tag pwn">Pwn</span>
+          <span class="ctf-cat-tag dfir">Forensics</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MACC 2026 -->
+    <div class="ctf-box ctf-box-live reveal reveal-delay-2">
+      <div class="ctf-box-status-badge">
+        <span class="ctf-live-dot"></span> LIVE
+      </div>
+      <div class="ctf-box-left">
+        <div class="ctf-box-status-label">EN COURS</div>
+        <div class="ctf-box-name">MACC 2026</div>
+        <div class="ctf-box-org">DGSSI &amp; SecDojo</div>
+        <div class="ctf-box-org">Compétition nationale de cybersécurité</div>
+        <div class="ctf-box-tags" style="margin-top:1rem;">
+          <span class="ctf-cat-tag nat">National</span>
+          <span class="ctf-cat-tag inst">DGSSI</span>
+          <span class="ctf-cat-tag inst">SecDojo</span>
+          <span class="ctf-cat-tag web">Active</span>
+        </div>
+        <div class="ctf-box-stats">
+          <div class="ctf-box-stat"><span class="ctf-box-stat-n">#27</span><span class="ctf-box-stat-l">NATIONAL</span></div>
+          <div class="ctf-box-stat"><span class="ctf-box-stat-n">8</span><span class="ctf-box-stat-l">LABS</span></div>
+          <div class="ctf-box-stat"><span class="ctf-box-stat-n">7/9</span><span class="ctf-box-stat-l">FLAGS</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Stats Banner -->
+  <div class="ctf-achievements-banner reveal reveal-delay-3">
+    <div class="ctf-achiev-item">
+      <div class="ctf-achiev-number">2</div>
+      <div class="ctf-achiev-label">CTF EVENTS</div>
+    </div>
+    <div class="ctf-achiev-item">
+      <div class="ctf-achiev-number">#16</div>
+      <div class="ctf-achiev-label">MEILLEUR RANG</div>
+    </div>
+    <div class="ctf-achiev-item">
+      <div class="ctf-achiev-number">60+</div>
+      <div class="ctf-achiev-label">ROOMS TRYHACKME</div>
+    </div>
+    <div class="ctf-achiev-item">
+      <div class="ctf-achiev-number">Top 15%</div>
+      <div class="ctf-achiev-label">TRYHACKME GLOBAL</div>
+    </div>
+  </div>
+
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="section-header reveal">
+    <div class="section-tag">05. CREDENTIALS</div>
+    <h2 class="section-title">CERTS & <span>PLATFORMS</span></h2>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="certs-ctf-grid">
+    <div class="reveal reveal-delay-1">
+      <h3 style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);letter-spacing:0.2em;margin-bottom:1rem;">// CERTIFICATIONS</h3>
+      <div class="cert-list">
+        <div class="cert-item">
+          <div class="cert-icon cyan"><i class="fas fa-certificate"></i></div>
+          <div class="cert-info">
+            <div class="cert-name">Introduction à la Cybersécurité</div>
+            <div class="cert-issuer">CISCO NETWORKING ACADEMY</div>
+          </div>
+          <div class="cert-badge-tag">CISCO</div>
+        </div>
+        <div class="cert-item">
+          <div class="cert-icon gold"><i class="fas fa-user-secret"></i></div>
+          <div class="cert-info">
+            <div class="cert-name">Ethical Hacker</div>
+            <div class="cert-issuer">CISCO NETWORKING ACADEMY</div>
+          </div>
+          <div class="cert-badge-tag">CISCO</div>
+        </div>
+        <div class="cert-item">
+          <div class="cert-icon green"><i class="fas fa-search"></i></div>
+          <div class="cert-info">
+            <div class="cert-name">Digital Forensics & Incident Response</div>
+            <div class="cert-issuer">TRYHACKME</div>
+          </div>
+          <div class="cert-badge-tag">DFIR PATH</div>
+        </div>
+        <div class="cert-item">
+          <div class="cert-icon silver"><i class="fas fa-shield-alt"></i></div>
+          <div class="cert-info">
+            <div class="cert-name">Cybersecurity 101</div>
+            <div class="cert-issuer">TRYHACKME</div>
+          </div>
+          <div class="cert-badge-tag">PARCOURS</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal reveal-delay-2">
+      <h3 style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);letter-spacing:0.2em;margin-bottom:1rem;">// CTF PLATFORMS</h3>
+      <div class="ctf-grid">
+        <div class="ctf-card">
+          <div class="ctf-platform">TRYHACKME</div>
+          <div class="ctf-stat">
+            Rank: <span>#Top 15%</span><br>
+            Rooms: <span>+60</span><br>
+            Badges: <span>12</span>
+          </div>
+        </div>
+        <div class="ctf-card">
+          <div class="ctf-platform">COMPETITIONS</div>
+          <div class="ctf-stat">
+            CTFs: <span>2</span><br>
+            Best: <span>Top 16</span><br>
+            National: <span>MACC 2026</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GITHUB -->
+<section id="github">
+  <div class="section-header reveal">
+    <div class="section-tag">06. OPEN SOURCE</div>
+    <h2 class="section-title">GITHUB <span>REPOS</span></h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="github-section-inner">
+    <div class="github-profile-card reveal reveal-delay-1">
+      <div class="gh-avatar"><i class="fab fa-github"></i></div>
+      <div class="gh-username">@Salma-bender</div>
+      <div class="gh-bio">Sécurité offensive & défensive, CTF, pentest API, forensics. Ingénieure InfoSec en devenir.</div>
+      <div class="gh-stats">
+        <div class="gh-stat"><div class="gh-stat-n">12+</div><div class="gh-stat-l">REPOS</div></div>
+        <div class="gh-stat"><div class="gh-stat-n">200+</div><div class="gh-stat-l">COMMITS</div></div>
+        <div class="gh-stat"><div class="gh-stat-n">30+</div><div class="gh-stat-l">STARS</div></div>
+      </div>
+      <a href="https://github.com/Salma-bender" target="_blank" class="btn-primary" style="width:100%;justify-content:center;">
+        <i class="fab fa-github"></i> VIEW PROFILE
+      </a>
+    </div>
+    <div class="repos-grid reveal reveal-delay-2">
+      <a href="https://github.com/Salma-bender" target="_blank" class="repo-card">
+        <div>
+          <div class="repo-name"><i class="fas fa-lock"></i> ocp-attack-detection-lab</div>
+          <div class="repo-desc">Lab virtuel OCP : scan Nmap, exploitation vsftpd 2.3.4 via Metasploit, supervision IDS avec Suricata & Zeek, corrélation d'IoCs.</div>
+          <div class="repo-meta"><div class="repo-lang"><div class="lang-dot lang-python"></div> Python</div><div class="repo-stars"><i class="fas fa-star"></i> —</div></div>
+        </div>
+        <i class="fas fa-external-link-alt" style="color:var(--text-dim);font-size:0.7rem;flex-shrink:0;"></i>
+      </a>
+      <a href="https://github.com/Salma-bender" target="_blank" class="repo-card">
+        <div>
+          <div class="repo-name"><i class="fas fa-lock"></i> api-pentest-lab</div>
+          <div class="repo-desc">APIs REST vulnérables sous Docker — tests IDOR, Broken Access Control, JWT tampering avec Burp Suite.</div>
+          <div class="repo-meta"><div class="repo-lang"><div class="lang-dot lang-php"></div> PHP</div><div class="repo-stars"><i class="fas fa-star"></i> —</div></div>
+        </div>
+        <i class="fas fa-external-link-alt" style="color:var(--text-dim);font-size:0.7rem;flex-shrink:0;"></i>
+      </a>
+      <a href="https://github.com/Salma-bender" target="_blank" class="repo-card">
+        <div>
+          <div class="repo-name"><i class="fas fa-lock"></i> blockchain-hashchain-security</div>
+          <div class="repo-desc">Mini-blockchain avec PoW, simulation d'attaque 51%, vérification d'intégrité et interface graphique interactive.</div>
+          <div class="repo-meta"><div class="repo-lang"><div class="lang-dot" style="background:#f1e05a;"></div> JavaScript</div><div class="repo-stars"><i class="fas fa-star"></i> —</div></div>
+        </div>
+        <i class="fas fa-external-link-alt" style="color:var(--text-dim);font-size:0.7rem;flex-shrink:0;"></i>
+      </a>
+      <a href="https://github.com/Salma-bender" target="_blank" class="repo-card">
+        <div>
+          <div class="repo-name"><i class="fas fa-lock"></i> cervicalcare-secure-platform</div>
+          <div class="repo-desc">Plateforme IA médicale sécurisée : AES-256, TLS 1.3, 2FA, audit trail, contrôle d'accès multi-rôles.</div>
+          <div class="repo-meta"><div class="repo-lang"><div class="lang-dot lang-php"></div> PHP / Laravel</div><div class="repo-stars"><i class="fas fa-star"></i> —</div></div>
+        </div>
+        <i class="fas fa-external-link-alt" style="color:var(--text-dim);font-size:0.7rem;flex-shrink:0;"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-header reveal">
+    <div class="section-tag">07. REACH OUT</div>
+    <h2 class="section-title">GET IN <span>TOUCH</span></h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="contact-wrapper">
+    <div class="contact-info reveal reveal-delay-1">
+      <p style="font-size:1rem;line-height:1.8;color:var(--text-secondary);margin-bottom:1.5rem;font-weight:300;">
+        Je suis à la recherche d'un <strong style="color:var(--accent-cyan);">stage PFA de 2 mois</strong>
+        en cybersécurité — SOC analyst, pentest, ou sécurité applicative. N'hésitez pas à me contacter.
+      </p>
+      <a href="mailto:salmabender11@gmail.com" class="contact-item">
+        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+        <div><div class="contact-label">EMAIL</div><div class="contact-value">salmabender11@gmail.com</div></div>
+      </a>
+      <a href="tel:+212627865006" class="contact-item">
+        <div class="contact-icon"><i class="fas fa-phone"></i></div>
+        <div><div class="contact-label">TÉLÉPHONE</div><div class="contact-value">+212 627 865 006</div></div>
+      </a>
+      <a href="https://www.linkedin.com/in/salma-bender-1b3842321" target="_blank" class="contact-item">
+        <div class="contact-icon"><i class="fab fa-linkedin-in"></i></div>
+        <div><div class="contact-label">LINKEDIN</div><div class="contact-value">linkedin.com/in/salma-bender</div></div>
+      </a>
+      <a href="https://github.com/Salma-bender" target="_blank" class="contact-item">
+        <div class="contact-icon"><i class="fab fa-github"></i></div>
+        <div><div class="contact-label">GITHUB</div><div class="contact-value">github.com/Salma-bender</div></div>
+      </a>
+      <a href="Salma_CV.pdf" download class="contact-item">
+        <div class="contact-icon"><i class="fas fa-file-pdf"></i></div>
+        <div><div class="contact-label">CV</div><div class="contact-value">Télécharger mon CV (.pdf)</div></div>
+      </a>
+    </div>
+    <div class="contact-form reveal reveal-delay-2">
+      <h3 style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);letter-spacing:0.2em;margin-bottom:1.5rem;">// SEND A MESSAGE</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">NAME</label>
+          <input type="text" class="form-input" placeholder="Votre nom">
+        </div>
+        <div class="form-group">
+          <label class="form-label">EMAIL</label>
+          <input type="email" class="form-input" placeholder="contact@entreprise.com">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">SUBJECT</label>
+        <input type="text" class="form-input" placeholder="Offre de stage / Collaboration / Question">
+      </div>
+      <div class="form-group">
+        <label class="form-label">MESSAGE</label>
+        <textarea class="form-textarea" placeholder="Votre message..."></textarea>
+      </div>
+      <button class="btn-primary" onclick="handleFormSubmit(event)" style="align-self:flex-start;">
+        <i class="fas fa-paper-plane"></i> ENVOYER
+      </button>
+      <div id="form-msg" style="font-family:var(--font-mono);font-size:0.72rem;margin-top:0.5rem;display:none;"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">
+    <div>© <span id="year"></span> <span>Salma Bender</span> — Ingénieure en Sécurité IT — FST Marrakech</div>
+   
+  </div>
+  <div class="footer-socials">
+    <a href="https://github.com/Salma-bender" target="_blank" class="social-link"><i class="fab fa-github"></i></a>
+    <a href="https://www.linkedin.com/in/salma-bender-1b3842321" target="_blank" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+    <a href="mailto:salmabender11@gmail.com" class="social-link"><i class="fas fa-envelope"></i></a>
+    <a href="Salma_CV_Engineering.pdf" download class="social-link"><i class="fas fa-download"></i></a>
+  </div>
+</footer>
+
+<script>
+/* MATRIX */
+(function() {
+  const canvas = document.getElementById('matrix-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, cols, drops;
+  const chars = '01アイウエオカキクケコABCDEF{}[]<>/\\|=+-*&^%$#@!;:NMAP SCAN ALERT THREAT DETECT';
+  function init() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+    cols = Math.floor(W / 18);
+    drops = Array(cols).fill(1);
+  }
+  function draw() {
+    ctx.fillStyle = 'rgba(2,4,8,0.05)';
+    ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = '#00f5ff';
+    ctx.font = '13px Share Tech Mono';
+    drops.forEach((y, i) => {
+      const char = chars[Math.floor(Math.random() * chars.length)];
+      ctx.fillText(char, i * 18, y * 18);
+      if (y * 18 > H && Math.random() > 0.975) drops[i] = 0;
+      drops[i]++;
+    });
+  }
+  init();
+  setInterval(draw, 55);
+  window.addEventListener('resize', init);
+})();
+
+/* CURSOR */
+(function() {
+  const dot  = document.getElementById('cursor-dot');
+  const ring = document.getElementById('cursor-ring');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  function animate() {
+    dot.style.left  = mx + 'px'; dot.style.top = my + 'px';
+    rx += (mx - rx) * 0.15; ry += (my - ry) * 0.15;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animate);
+  }
+  animate();
+  document.querySelectorAll('a, button, .skill-tag, .project-card, .cert-item, .ctf-competition-card').forEach(el => {
+    el.addEventListener('mouseenter', () => ring.style.width = ring.style.height = '44px');
+    el.addEventListener('mouseleave', () => ring.style.width = ring.style.height = '28px');
+  });
+})();
+
+/* HAMBURGER */
+document.getElementById('hamburger').addEventListener('click', function() {
+  document.getElementById('navLinks').classList.toggle('open');
+});
+document.querySelectorAll('#navLinks a').forEach(link => {
+  link.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'));
+});
+
+/* SCROLL REVEAL */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+/* NAV ACTIVE */
+(function() {
+  const sections = document.querySelectorAll('section[id]');
+  const links    = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) current = s.id; });
+    links.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--accent-cyan)' : '';
+    });
+  });
+})();
+
+/* YEAR */
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* FORM */
+function handleFormSubmit(e) {
+  e.preventDefault();
+  const msg = document.getElementById('form-msg');
+  msg.style.display = 'block';
+  msg.style.color = 'var(--accent-green)';
+  msg.textContent = '> Message envoyé. Je vous répondrai dans les 24h. ✓';
+}
+
+/* TERMINAL TYPING */
+(function() {
+  document.querySelectorAll('.terminal-line').forEach((line, i) => {
+    line.style.opacity = '0';
+    setTimeout(() => { line.style.transition = 'opacity 0.3s'; line.style.opacity = '1'; }, 1200 + i * 180);
+  });
+})();
+</script>
+</body>
+</html>
