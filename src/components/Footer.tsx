@@ -3,7 +3,7 @@ import { asset, navLinks, profile } from '../data/content'
 const contacts = [
   { icon: 'fas fa-envelope', label: 'EMAIL', value: profile.email, href: `mailto:${profile.email}` },
   { icon: 'fas fa-phone', label: 'TÉLÉPHONE', value: profile.phoneDisplay, href: profile.phoneHref },
-  { icon: 'fas fa-map-marker-alt', label: 'LOCALISATION', value: profile.location },
+  { icon: 'fas fa-map-marker-alt', label: 'MOBILITÉ', value: profile.location },
   { icon: 'fab fa-linkedin-in', label: 'LINKEDIN', value: `in/${profile.linkedinLabel}`, href: profile.linkedin, external: true },
   { icon: 'fab fa-github', label: 'GITHUB', value: `github.com/${profile.githubHandle}`, href: profile.github, external: true },
 ]
@@ -64,7 +64,6 @@ export function Footer() {
       </div>
       <div className="footer-bottom">
         <span>© {year} <span className="footer-name">{profile.name}</span> — Élève ingénieure en Sécurité IT — FST Marrakech, UCA</span>
-        <span>{profile.location}</span>
       </div>
     </footer>
   )

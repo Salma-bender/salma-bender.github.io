@@ -11,7 +11,7 @@ export const profile = {
   email: 'salmabenderpro@gmail.com',
   phoneDisplay: '+212 627 865 006',
   phoneHref: 'tel:+212627865006',
-  location: 'Marrakech, Maroc',
+  location: 'Ouverte à un stage partout au Maroc',
   linkedin: 'https://www.linkedin.com/in/salma-bender-1b3842321',
   linkedinLabel: 'salma-bender',
   github: 'https://github.com/Salma-bender',
@@ -125,7 +125,7 @@ export const aboutLeft = [
 
 export const aboutRight = [
   { title: 'DISPONIBILITÉ', text: 'Stage PFE de 6 mois à partir de février 2027', live: true },
-  { title: 'LOCALISATION', text: 'Marrakech, Maroc' },
+  { title: 'MOBILITÉ', text: 'Ouverte à un stage dans n\'importe quelle ville du Maroc' },
   { title: 'LANGUES', text: 'Arabe (maternelle) · Français · Anglais (courant)' },
 ]
 
