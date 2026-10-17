@@ -73,22 +73,18 @@ export const orbitalRings: {
   },
 ]
 
-export type TermLine =
-  | { kind: 'cmd'; command: string }
-  | { kind: 'out'; text: string; tone: 'cyan' | 'green' | 'amber' }
-  | { kind: 'prompt' }
+export const heroRoles = [
+  'SOC & SIEM',
+  'Threat Intelligence',
+  'Automatisation SOAR',
+  'Réponse aux incidents',
+  'IA pour la détection',
+]
 
-export const terminalLines: TermLine[] = [
-  { kind: 'cmd', command: 'whoami' },
-  { kind: 'out', text: 'Élève ingénieure Sécurité IT, 5ème année — FST Marrakech', tone: 'cyan' },
-  { kind: 'cmd', command: 'cat mission.txt' },
-  { kind: 'out', text: 'Detect. Respond. Automate. Secure.', tone: 'green' },
-  { kind: 'cmd', command: 'cat experience.log' },
-  { kind: 'out', text: 'PFA Al Barid Bank · DRSSI Rabat — SOC Platform (SIEM+CTI+SOAR) — 2026', tone: 'amber' },
-  { kind: 'out', text: 'Stage Groupe OCP Khouribga — Attack Simulation & IDS — 2025', tone: 'amber' },
-  { kind: 'cmd', command: 'ls skills/' },
-  { kind: 'out', text: 'soc/  threat_intel/  soar/  offensive/  network/  ai_security/', tone: 'amber' },
-  { kind: 'prompt' },
+export const heroHighlights = [
+  { icon: 'fas fa-university', title: 'Al Barid Bank', text: 'PFA SOC · 2026' },
+  { icon: 'fas fa-industry', title: 'Groupe OCP', text: 'Stage · 2025' },
+  { icon: 'fas fa-graduation-cap', title: 'FST Marrakech', text: 'Ingénieur · 5ᵉ année' },
 ]
 
 export const aboutParagraph =
