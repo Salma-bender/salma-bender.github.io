@@ -1,72 +1,119 @@
+import { motion, useReducedMotion } from 'framer-motion'
 import { projects, type Project } from '../data/content'
-import { ConnectorLines } from './ConnectorLines'
-import { IsometricPlatform } from './IsometricPlatform'
-import { Reveal } from './Reveal'
 import { SectionHeader } from './SectionHeader'
 
-function Summary({ text }: { text: string }) {
-  const token = '(labsoc.local)'
-  const at = text.indexOf(token)
-  if (at === -1) return <>{text}</>
+const PER_ROW = 3
+// Time between two platforms appearing; the link to the next one draws in between.
+const STEP = 0.45
+
+function chunk<T>(items: T[], size: number) {
+  const rows: T[][] = []
+  for (let i = 0; i < items.length; i += size) rows.push(items.slice(i, i + size))
+  return rows
+}
+
+function StepText({ project, number }: { project: Project; number: number }) {
   return (
-    <>
-      {text.slice(0, at)}(<em>labsoc.local</em>){text.slice(at + token.length)}
-    </>
+    <div className="path-text">
+      <div className="path-head">
+        <span className="path-num">{number}</span>
+        <h3 className="path-title">{project.title}</h3>
+      </div>
+      <span className="path-status">{project.status}</span>
+      <p className="path-desc">{project.summary}</p>
+      <div className="path-techs">
+        {project.techs.map((tech) => <span className="tech-pill" key={tech}>{tech}</span>)}
+      </div>
+      <div className="path-footer">
+        <span>{project.footer}</span>
+        {project.href ? (
+          <a href={project.href} target="_blank" rel="noreferrer" className="path-link">
+            <i className="fab fa-github" aria-hidden="true" /> CODE
+          </a>
+        ) : null}
+      </div>
+    </div>
   )
 }
 
-function ProjectCard({ project }: { project: Project }) {
-  const className = `project-card accent-${project.accent}${project.featured ? ' is-featured' : ''}`
-  const body = (
-    <>
-      <div className="project-tools">
-        <span className="project-tools-label">TOOLS</span>
-        <div className="project-techs">
-          {project.techs.map((tech) => (
-            <span className="tech-pill" key={tech}>{tech}</span>
-          ))}
-        </div>
-      </div>
-      <IsometricPlatform icon={project.icon} accent={project.accent} />
-      <div className="project-main">
-        <div className="project-head">
-          <span className="project-status">{project.status}</span>
-        </div>
-        <h3 className="project-title">{project.title}</h3>
-        <div className="project-desc">
-          <Summary text={project.summary} />
-          {project.scenarios?.map((scenario) => (
-            <p key={scenario.lead} className={`scenario ${scenario.tone}`}>
-              <strong>► {scenario.lead}</strong> — {scenario.text}
-            </p>
-          ))}
-        </div>
-        <div className={`project-footer${project.footerTone === 'amber' ? ' is-amber' : ''}`}>{project.footer}</div>
-      </div>
-    </>
-  )
-
-  if (!project.href) return <article className={className}>{body}</article>
-
+function Platform({ icon }: { icon: string }) {
   return (
-    <a className={className} href={project.href} target="_blank" rel="noreferrer">
-      {body}
-    </a>
+    <div className="path-platform">
+      <div className="path-tile">
+        <span className="path-inner">
+          <span className="path-icon"><i className={icon} aria-hidden="true" /></span>
+        </span>
+      </div>
+    </div>
   )
 }
 
 export function Projects() {
+  const reduced = useReducedMotion()
+  const rows = chunk(projects, PER_ROW)
+
   return (
     <section id="projects">
       <SectionHeader index="03" kicker="PORTFOLIO" title="SECURITY" accent="PROJECTS" />
-      <div className="stage projects-grid">
-        <ConnectorLines />
-        {projects.map((project, index) => (
-          <Reveal key={project.title} className={project.featured ? 'is-wide' : undefined} delay={(index % 3) * 0.08}>
-            <ProjectCard project={project} />
-          </Reveal>
+      <div className="path">
+        {rows.map((row, rowIndex) => (
+          <motion.div
+            key={rowIndex}
+            className="path-row"
+            initial={reduced ? false : 'hidden'}
+            whileInView="shown"
+            viewport={{ once: true, amount: 0.25 }}
+          >
+            {row.map((project, index) => {
+              const number = rowIndex * PER_ROW + index + 1
+              const low = index % 2 === 1
+              return (
+                <div
+                  key={project.title}
+                  className={`path-step${low ? ' is-low' : ''}`}
+                  style={{ ['--col' as string]: index + 1 }}
+                >
+                  {!low ? <StepTextAnimated project={project} number={number} delay={index * STEP} /> : null}
+                  <motion.div
+                    className="path-visual"
+                    variants={{
+                      hidden: { opacity: 0, y: 40, scale: 0.8 },
+                      shown: { opacity: 1, y: 0, scale: 1, transition: { delay: index * STEP, duration: 0.55, ease: [0.22, 1, 0.36, 1] } },
+                    }}
+                  >
+                    <Platform icon={project.icon} />
+                    {index < row.length - 1 ? (
+                      <motion.span
+                        className="path-link-line"
+                        aria-hidden="true"
+                        variants={{
+                          hidden: { scaleX: 0 },
+                          shown: { scaleX: 1, transition: { delay: index * STEP + 0.3, duration: 0.4 } },
+                        }}
+                      />
+                    ) : null}
+                  </motion.div>
+                  {low ? <StepTextAnimated project={project} number={number} delay={index * STEP} /> : null}
+                </div>
+              )
+            })}
+          </motion.div>
         ))}
       </div>
     </section>
+  )
+}
+
+function StepTextAnimated({ project, number, delay }: { project: Project; number: number; delay: number }) {
+  return (
+    <motion.div
+      className="path-text-wrap"
+      variants={{
+        hidden: { opacity: 0, y: 16 },
+        shown: { opacity: 1, y: 0, transition: { delay: delay + 0.15, duration: 0.5 } },
+      }}
+    >
+      <StepText project={project} number={number} />
+    </motion.div>
   )
 }

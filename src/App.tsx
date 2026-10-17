@@ -1,4 +1,5 @@
 import { About } from './components/About'
+import { BackToTop } from './components/BackToTop'
 import { Certifications } from './components/Certifications'
 import { Competitions } from './components/Competitions'
 import { Contact } from './components/Contact'
@@ -6,6 +7,7 @@ import { Cursor } from './components/Cursor'
 import { Footer } from './components/Footer'
 import { Github } from './components/Github'
 import { Hero } from './components/Hero'
+import { Marquee } from './components/Marquee'
 import { MatrixRain } from './components/MatrixRain'
 import { Nav } from './components/Nav'
 import { Projects } from './components/Projects'
@@ -20,6 +22,7 @@ export default function App() {
       <Nav />
       <main>
         <Hero />
+        <Marquee />
         <About />
         <Skills />
         <Projects />
@@ -29,6 +32,7 @@ export default function App() {
         <Contact />
       </main>
       <Footer />
+      <BackToTop />
     </>
   )
 }

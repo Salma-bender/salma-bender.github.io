@@ -1,5 +1,4 @@
 import { skillCategories } from '../data/content'
-import { Marquee } from './Marquee'
 import { Reveal } from './Reveal'
 import { SectionHeader } from './SectionHeader'
 
@@ -24,7 +23,6 @@ export function Skills() {
           </Reveal>
         ))}
       </div>
-      <Marquee />
     </section>
   )
 }

@@ -8,13 +8,13 @@ export function Hero() {
       <div className="hero-stage">
       <div className="hero-copy">
         <p className="hero-tag hero-rise" style={{ animationDelay: '0.15s' }}>
-          INGÉNIEURE EN SÉCURITÉ DES TECHNOLOGIES DE L'INFORMATION · DISPONIBLE PFE FÉV. 2027
+          ÉLÈVE INGÉNIEURE EN SÉCURITÉ IT · RECHERCHE STAGE PFE 6 MOIS · FÉV. 2027
         </p>
         <h1 className="hero-name hero-rise" style={{ animationDelay: '0.3s' }}>
           SALMA<br /><span>BENDER</span>
         </h1>
         <p className="hero-title hero-rise" style={{ animationDelay: '0.45s' }}>
-          SOC ANALYST &nbsp;/&nbsp; PENETRATION TESTER &nbsp;/&nbsp; SECURITY ENGINEER
+          SOC ANALYST &nbsp;/&nbsp; THREAT INTELLIGENCE &nbsp;/&nbsp; SECURITY ENGINEER
         </p>
         <div className="hero-terminal hero-rise" style={{ animationDelay: '0.6s' }}>
           <div className="terminal-bar">

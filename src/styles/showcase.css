@@ -1,0 +1,390 @@
+/* ---------- Typography polish for the sans-serif switch ---------- */
+
+.section-title { font-weight: 800; letter-spacing: -0.02em; }
+.section-tag { font-weight: 600; letter-spacing: 0.18em; }
+.wheel-point h3, .path-title { letter-spacing: 0.01em; font-weight: 700; }
+
+.ctf-box-stats { flex-wrap: wrap; row-gap: 0.8rem; }
+.ctf-box { min-width: 0; }
+
+/* ---------- Back to top ---------- */
+
+.back-to-top {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 900;
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--navy);
+  color: #ffffff;
+  text-decoration: none;
+  box-shadow: 0 10px 24px rgba(11, 21, 48, 0.28);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s, background 0.2s ease;
+}
+.back-to-top.is-visible { opacity: 1; visibility: visible; transform: none; }
+.back-to-top:hover { background: var(--accent-cyan); }
+
+/* ---------- About: tool wheel around the photo ---------- */
+
+/* Points slide in from the sides; keep that offset from widening the page. */
+#about { overflow-x: clip; }
+
+.about-lead {
+  max-width: 820px;
+  margin: -1.5rem auto 3rem;
+  text-align: center;
+}
+.about-lead p {
+  font-size: 1.12rem;
+  line-height: 1.85;
+  color: var(--text-secondary);
+}
+
+.wheel-layout {
+  display: grid;
+  grid-template-columns: 1fr minmax(320px, 480px) 1fr;
+  align-items: center;
+  gap: 2.5rem;
+  max-width: 1250px;
+  margin: 0 auto;
+}
+
+.wheel-side {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2.6rem;
+}
+
+.wheel-point { position: relative; }
+.wheel-side.is-left .wheel-point { text-align: right; padding-right: 3.4rem; }
+.wheel-side.is-right .wheel-point { padding-left: 3.4rem; }
+
+/* Connector line + glowing dot pointing at the wheel. */
+.wheel-point::before,
+.wheel-point::after {
+  content: '';
+  position: absolute;
+  top: 0.7rem;
+}
+.wheel-point::before {
+  width: 2.6rem;
+  height: 1px;
+  background: linear-gradient(90deg, var(--border-glow), var(--accent-cyan));
+}
+.wheel-side.is-right .wheel-point::before { background: linear-gradient(90deg, var(--accent-cyan), var(--border-glow)); }
+.wheel-point::after {
+  width: 9px;
+  height: 9px;
+  margin-top: -4px;
+  border-radius: 50%;
+  background: var(--accent-cyan);
+  box-shadow: 0 0 0 4px rgba(0, 127, 144, 0.12), var(--glow-sm);
+}
+.wheel-side.is-left .wheel-point::before { right: 0; }
+.wheel-side.is-left .wheel-point::after { right: -4px; }
+.wheel-side.is-right .wheel-point::before { left: 0; }
+.wheel-side.is-right .wheel-point::after { left: -4px; }
+
+.wheel-point h3 {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  color: var(--text-primary);
+}
+.wheel-point p {
+  margin-top: 0.4rem;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+.wheel-point p.is-live { color: var(--accent-green); font-weight: 600; }
+
+.wheel {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+}
+.wheel-rings { position: absolute; inset: 0; }
+
+.wheel-track {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.wheel-track.t1 { inset: 4%; border: 1px dashed rgba(0, 127, 144, 0.35); }
+.wheel-track.t2 { inset: 19%; border: 1px dashed rgba(11, 122, 73, 0.35); }
+
+.wheel-ring {
+  position: absolute;
+  inset: 0;
+  animation: orbit-cw 60s linear infinite;
+}
+.wheel-ring.is-reverse { animation-name: orbit-ccw; animation-duration: 45s; }
+
+.wheel-item {
+  position: absolute;
+  width: 13%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+}
+.wheel-ring.is-reverse .wheel-item { width: 11.5%; }
+
+/* Counter-rotate so the logos stay upright while their ring turns. */
+.wheel-badge {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 22%;
+  background: #ffffff;
+  border: 1px solid var(--border-glow);
+  border-radius: 14px;
+  box-shadow: 0 8px 22px rgba(16, 42, 70, 0.1);
+  animation: orbit-ccw 60s linear infinite;
+}
+.wheel-ring.is-reverse .wheel-badge { animation-name: orbit-cw; animation-duration: 45s; }
+.wheel-badge img { width: 100%; height: 100%; object-fit: contain; }
+.wheel-badge-text {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.05;
+}
+
+.wheel-photo {
+  position: absolute;
+  left: 27%;
+  top: 27%;
+  width: 46%;
+  aspect-ratio: 1;
+  padding: 5px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, var(--accent-cyan), var(--accent-green), #9fe3ec, var(--accent-cyan));
+  box-shadow: 0 18px 50px rgba(0, 127, 144, 0.28), var(--glow-lg);
+  z-index: 2;
+}
+.wheel-photo-frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 50%;
+  border: 5px solid #ffffff;
+  background: #ffffff;
+}
+/* The source photo is full-length: zoom in on the face and shoulders. */
+.wheel-photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 55% 0%;
+  transform: scale(1.75);
+  transform-origin: 55% 22%;
+}
+
+/* ---------- Projects: chained isometric platforms ---------- */
+
+.path {
+  display: flex;
+  flex-direction: column;
+  gap: 4.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.path-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: auto auto auto;
+  column-gap: 2.5rem;
+}
+
+.path-step { display: contents; }
+
+.path-text-wrap { grid-column: var(--col); }
+.path-step:not(.is-low) .path-text-wrap { grid-row: 1; align-self: end; }
+.path-step.is-low .path-text-wrap { grid-row: 3; }
+
+.path-visual {
+  position: relative;
+  grid-column: var(--col);
+  grid-row: 2;
+  display: flex;
+  justify-content: center;
+}
+.path-step:not(.is-low) .path-platform { margin-bottom: 110px; }
+.path-step.is-low .path-platform { margin-top: 110px; }
+
+/* Double line linking a platform to the next one, drawn after the platform appears. */
+.path-link-line {
+  position: absolute;
+  top: calc(50% - 4px);
+  left: 50%;
+  width: calc(100% + 2.5rem);
+  height: 9px;
+  border-top: 2px solid rgba(0, 127, 144, 0.45);
+  border-bottom: 2px solid rgba(0, 127, 144, 0.25);
+  transform-origin: left center;
+  z-index: 0;
+  -webkit-mask-image: linear-gradient(90deg, transparent 18%, #000 32%, #000 68%, transparent 82%);
+  mask-image: linear-gradient(90deg, transparent 18%, #000 32%, #000 68%, transparent 82%);
+}
+
+.path-platform {
+  position: relative;
+  z-index: 1;
+  width: 200px;
+  height: 150px;
+  display: grid;
+  place-items: center;
+  animation: bob 5.5s ease-in-out infinite;
+}
+.path-step:nth-child(2) .path-platform { animation-delay: -1.8s; }
+.path-step:nth-child(3) .path-platform { animation-delay: -3.2s; }
+
+.path-tile {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  border-radius: 22px;
+  transform: rotateX(58deg) rotateZ(-45deg);
+  background: linear-gradient(135deg, #0f6f86 0%, #0a4a68 55%, #082f4a 100%);
+  box-shadow:
+    1px 1px 0 #072a42,
+    2px 2px 0 #072a42,
+    3px 3px 0 #06263c,
+    4px 4px 0 #06263c,
+    5px 5px 0 #052236,
+    6px 6px 0 #052236,
+    7px 7px 0 #041e30,
+    8px 8px 0 #041e30,
+    26px 30px 40px rgba(8, 47, 74, 0.35);
+}
+.path-tile::before,
+.path-tile::after {
+  content: '';
+  position: absolute;
+  border-radius: 18px;
+  border: 1px solid rgba(120, 220, 235, 0.35);
+}
+.path-tile::before { inset: 12px; }
+.path-tile::after { inset: 22px; border-color: rgba(120, 220, 235, 0.2); }
+
+.path-inner {
+  position: absolute;
+  inset: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #ffffff, #e6f2f6);
+  box-shadow: 3px 3px 0 #b9cfd9, 4px 4px 0 #a9c2ce;
+}
+.path-icon {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #34d1e6, var(--accent-cyan));
+  color: #ffffff;
+  font-size: 1.05rem;
+  box-shadow: 0 0 14px rgba(0, 127, 144, 0.45);
+  /* Undo the tile rotation so the icon faces the viewer. */
+  transform: rotateZ(45deg) rotateX(-58deg) scale(1.15);
+}
+
+.path-text { padding: 0.4rem 0.2rem; }
+.path-head { display: flex; align-items: center; gap: 0.75rem; }
+.path-num {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  color: var(--accent-cyan);
+  background: rgba(0, 127, 144, 0.08);
+  border: 1px solid var(--border-glow);
+}
+.path-title {
+  font-family: var(--font-display);
+  font-size: 0.86rem;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+  color: var(--text-primary);
+}
+.path-status {
+  display: inline-block;
+  margin: 0.7rem 0 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  padding: 0.22rem 0.55rem;
+  color: var(--accent-green);
+  border: 1px solid rgba(11, 122, 73, 0.25);
+  background: rgba(11, 122, 73, 0.06);
+}
+.path-desc {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--text-secondary);
+}
+.path-techs { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.8rem; }
+.path-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin-top: 0.85rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid var(--border-subtle);
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  color: var(--text-dim);
+}
+.path-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--accent-cyan);
+  text-decoration: none;
+  letter-spacing: 0.1em;
+}
+.path-link:hover { text-decoration: underline; }
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 1100px) {
+  .wheel-layout { grid-template-columns: 1fr minmax(280px, 380px) 1fr; gap: 1.5rem; }
+  .path-row { column-gap: 1.5rem; }
+  .path-link-line { width: calc(100% + 1.5rem); }
+  .path-tile { width: 120px; height: 120px; }
+  .path-inner { inset: 28px; }
+}
+
+@media (max-width: 860px) {
+  .wheel-layout { grid-template-columns: 1fr; gap: 2rem; }
+  .wheel { max-width: 400px; margin: 0 auto; order: -1; }
+  .wheel-side { gap: 1.6rem; }
+  .wheel-side.is-left .wheel-point { text-align: left; padding-right: 0; padding-left: 3.4rem; }
+  .wheel-side.is-left .wheel-point::before { right: auto; left: 0; }
+  .wheel-side.is-left .wheel-point::after { right: auto; left: -4px; }
+  .wheel-side.is-left .wheel-point::before { background: linear-gradient(90deg, var(--accent-cyan), var(--border-glow)); }
+
+  .path { gap: 2.5rem; }
+  .path-row { display: flex; flex-direction: column; gap: 2.5rem; }
+  .path-step { display: flex; flex-direction: column; align-items: stretch; }
+  .path-step .path-text-wrap { order: 2; }
+  .path-step .path-platform { margin: 0 !important; }
+  .path-link-line { display: none; }
+}
