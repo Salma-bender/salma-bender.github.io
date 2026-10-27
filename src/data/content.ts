@@ -215,8 +215,8 @@ export const projects: Project[] = [
     status: 'PFA — AL BARID BANK',
     href: 'https://github.com/Salma-bender/soc-platform-siem-cti-soar',
     summary:
-      "Wazuh, MISP, TheHive + Cortex + Shuffle sous Docker, 7 règles mappées MITRE ATT&CK. Kill chain AD détectée (GoPhish → Sliver C2 → persistance → Kerberoasting) et blocage IP pfSense en moins de 90 s.",
-    techs: ['Wazuh', 'MISP', 'TheHive', 'Shuffle', 'pfSense', 'MITRE ATT&CK'],
+      "Wazuh, MISP, TheHive + Cortex + Shuffle sous Docker, 7 règles mappées MITRE ATT&CK. Réponse automatisée en 49 s (MTTR) : alerte Wazuh → corrélation MISP → blocage IP pfSense → cas TheHive → e-mail, validée en WAN et sur LAN micro-segmenté. Kill chain AD détectée (GoPhish → Sliver C2 → persistance → Kerberoasting).",
+    techs: ['Wazuh', 'MISP', 'TheHive', 'Shuffle', 'pfSense', 'Micro-segmentation', 'MITRE ATT&CK'],
     footer: 'DRSSI · Rabat · 2026',
   },
   {

@@ -59,7 +59,7 @@ export function Hero() {
         <p className="hx-pitch hero-rise" style={{ animationDelay: '0.54s' }}>
           Je conçois des plateformes de détection et j'automatise la réponse aux incidents.
           Dernier projet : un SOC complet chez <strong>Al Barid Bank</strong>, capable de bloquer
-          une IP malveillante en <strong>moins de 90 secondes</strong>.
+          une IP malveillante en <strong>49 secondes</strong>.
         </p>
 
         <ul className="hx-cards">
