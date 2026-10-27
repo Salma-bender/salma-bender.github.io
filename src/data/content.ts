@@ -321,7 +321,7 @@ export const certifications: Cert[] = [
   { name: 'Ethical Hacker', issuer: 'CISCO NETWORKING ACADEMY', icon: 'fas fa-user-secret', accent: 'gold', badge: 'CISCO', url: 'https://www.credly.com/badges/77cb9438-5ca0-46ea-81b4-1a7fd08e6500' },
   { name: 'Cybersecurity 101', issuer: 'TRYHACKME', icon: 'fas fa-shield-alt', accent: 'silver', badge: '✓ COMPLÉTÉ', badgeTone: 'done', url: 'https://tryhackme.com/certificate/THM-NKHE0MAIYY' },
   { name: 'SOC Level 1', issuer: 'TRYHACKME', icon: 'fas fa-satellite-dish', accent: 'cyan', badge: '✓ COMPLÉTÉ', badgeTone: 'done', url: 'https://tryhackme.com/certificate/THM-K1SJW9LA9H' },
-  { name: 'AI Security', issuer: 'TRYHACKME', icon: 'fas fa-robot', accent: 'purple', badge: 'EN COURS', badgeTone: 'progress' },
+  { name: 'AI Security', issuer: 'TRYHACKME', icon: 'fas fa-robot', accent: 'purple', badge: '✓ COMPLÉTÉ', badgeTone: 'done', url: 'https://tryhackme.com/certificate/THM-F5IOMYVNP7' },
 ]
 
 export const ctfPlatforms = [
@@ -330,7 +330,7 @@ export const ctfPlatforms = [
     lines: [
       ['SOC Level 1:', '✓ Complété'],
       ['Cybersecurity 101:', '✓ Complété'],
-      ['AI Security:', 'En cours'],
+      ['AI Security:', '✓ Complété'],
     ],
   },
   {
