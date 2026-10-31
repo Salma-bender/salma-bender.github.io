@@ -223,6 +223,7 @@ export const projects: Project[] = [
     title: "DÉTECTION D'ATTAQUES WEB PAR IA, WAF & XDR",
     icon: 'fas fa-robot',
     status: 'EN COURS',
+    href: 'https://github.com/Salma-bender/waf-xdr-ai-evasion',
     summary:
       "Lab offensif/défensif : règles Wazuh à 3 niveaux et modèle Random Forest pour démontrer puis détecter l'évasion des signatures (SQLi, XSS, LFI/RFI, RCE).",
     techs: ['ModSecurity', 'OWASP CRS', 'DVWA', 'Wazuh', 'scikit-learn', 'pandas'],
@@ -374,6 +375,16 @@ export const repos: Repo[] = [
     langClass: 'python',
     stars: '—',
     href: 'https://github.com/Salma-bender/soc-platform-siem-cti-soar',
+  },
+  {
+    name: 'waf-xdr-ai-evasion',
+    icon: 'fas fa-robot',
+    description: "Architecture IA + XDR + WAF pour détecter les techniques d'évasion avancées dans les attaques web.",
+    lang: 'ModSecurity · OWASP CRS',
+    langClass: 'shell',
+    stars: 'EN COURS',
+    href: 'https://github.com/Salma-bender/waf-xdr-ai-evasion',
+    upcoming: true,
   },
   {
     name: 'pfsense-openvpn-suricata-lab',
